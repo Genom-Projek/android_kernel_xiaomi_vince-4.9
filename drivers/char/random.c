@@ -2129,7 +2129,7 @@ u64 get_random_u64(void)
 	struct batched_entropy *batch;
 
 #if BITS_PER_LONG == 64
-	if (arch_get_random_long((unsigned long *)&ret))
+	if (arch_get_random_long((unsigned longz *)&ret))
 		return ret;
 #else
 	if (arch_get_random_long((unsigned long *)&ret) &&
