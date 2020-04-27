@@ -10,4 +10,4 @@ steps:
       from_secret: BOT_API
   commands:
   - wget https://raw.githubusercontent.com/starlight5234/scripts/master/build.sh
-  - bash nuild.sh
+  - bash build.sh
