@@ -1,0 +1,13 @@
+kind: pipeline
+type: docker
+name: build
+
+steps:
+- name: cooked
+  image: najahi/oven:latest
+  environment:
+    token:
+      from_secret: BOT_API
+  commands:
+  - wget https://raw.githubusercontent.com/starlight5234/scripts/master/build.sh
+  - bash nuild.sh
