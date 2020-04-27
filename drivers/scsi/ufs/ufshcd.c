@@ -2010,10 +2010,6 @@ static int ufshcd_hibern8_hold(struct ufs_hba *hba, bool async)
 	}
 
 start:
-<<<<<<< HEAD
-	switch (hba->hibern8_on_idle.state) {
-	case HIBERN8_EXITED:
-=======
 	switch (hba->clk_gating.state) {
 	case CLKS_ON:
 		/*
@@ -2036,7 +2032,6 @@ start:
 			spin_lock_irqsave(hba->host->host_lock, flags);
 			goto start;
 		}
->>>>>>> db1b2190d587... scsi: ufs: Fix ufshcd_hold() caused scheduling while atomic
 		break;
 	case REQ_HIBERN8_ENTER:
 		if (cancel_delayed_work(&hba->hibern8_on_idle.enter_work)) {
@@ -6894,35 +6889,6 @@ static irqreturn_t ufshcd_intr(int irq, void *__hba)
 
 	spin_lock(hba->host->host_lock);
 	intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
-<<<<<<< HEAD
-	hba->ufs_stats.last_intr_status = intr_status;
-	hba->ufs_stats.last_intr_ts = ktime_get();
-	/*
-	 * There could be max of hba->nutrs reqs in flight and in worst case
-	 * if the reqs get finished 1 by 1 after the interrupt status is
-	 * read, make sure we handle them by checking the interrupt status
-	 * again in a loop until we process all of the reqs before returning.
-	 */
-	do {
-		enabled_intr_status =
-			intr_status & ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
-		if (intr_status)
-			ufshcd_writel(hba, intr_status, REG_INTERRUPT_STATUS);
-		if (enabled_intr_status)
-			retval |= ufshcd_sl_intr(hba, enabled_intr_status);
-
-		intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
-	} while (intr_status && --retries);
-
-	if (retval == IRQ_NONE) {
-		dev_err(hba->dev, "%s: Unhandled interrupt 0x%08x\n",
-					__func__, intr_status);
-		ufshcd_hex_dump(hba, "host regs: ", hba->mmio_base,
-					UFSHCI_REG_SPACE_SIZE);
-	}
-
-=======
-
 	/*
 	 * There could be max of hba->nutrs reqs in flight and in worst case
 	 * if the reqs get finished 1 by 1 after the interrupt status is
@@ -6942,7 +6908,6 @@ static irqreturn_t ufshcd_intr(int irq, void *__hba)
 		intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
 	} while (intr_status && --retries);
 
->>>>>>> 5ebfa3b9b37c... scsi: ufs: make sure all interrupts are processed
 	spin_unlock(hba->host->host_lock);
 	return retval;
 }
